@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+	<class name="hibernate.test.school.Student"
+		table="STUDENT">
+		<meta attribute="class-description">
+			Student details.
+		</meta>
+		<id name="id" type="int" column="ID">
+			<generator class="native" />
+		</id>
+		
+		<property name="name" column="NAME" type="string" />
+		<property name="lastname" column="LASTNAME" type="string" />
+		
+		<bag name="marks" cascade="all" lazy="false">
+		    <key column="student_id"></key>
+		    <one-to-many class="hibernate.test.school.Mark"/>
+		</bag>
+		
+		<set name="articles" table="ARTICLE_STUDENT" lazy="false" cascade="all" inverse="false">
+		    <key>
+		        <column name="student_id"/>
+		    </key>
+		    
+		    <many-to-many entity-name="hibernate.test.school.Article">
+		        <column name="article_id"/>
+		    </many-to-many>
+		</set>
+		
+		<component name="studentName" class="hibernate.test.school.StudentName">
+		    <property name="name" column="NAME" type="string" insert="false" update="false"/>
+		    <property name="lastname" column="LASTNAME" type="string" insert="false" update="false"/>
+		</component>
+		
+	</class>
+</hibernate-mapping>

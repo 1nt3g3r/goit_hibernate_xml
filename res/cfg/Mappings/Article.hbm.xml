@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+	<class name="hibernate.test.school.Article"
+		table="ARTICLE">
+		<meta attribute="class-description">
+			Student's articles.
+		</meta>
+		<id name="id" type="int" column="ID">
+			<generator class="native" />
+		</id>
+		
+		<set name="students" table="ARTICLE_STUDENT" lazy="false" cascade="all" inverse="true">
+		    <key>
+		        <column name="article_id"/>
+		    </key>
+		    
+		    <many-to-many entity-name="hibernate.test.school.Student">
+		        <column name="student_id"/>
+		    </many-to-many>
+		</set>
+		
+		<property name="content" column="CONTENT" type="string" />
+	</class>
+</hibernate-mapping>
