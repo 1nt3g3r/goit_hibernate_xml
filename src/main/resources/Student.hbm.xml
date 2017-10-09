@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping>
+	<class name="hibernate.test.school.Student"
+		table="STUDENT">
+		<meta attribute="class-description">
+			Student details.
+		</meta>
+		<id name="id" type="int" column="ID">
+			<generator class="native" />
+		</id>
+		
+		<property name="name" column="NAME" type="string" />
+		<property name="lastname" column="LASTNAME" type="string" />
+		
+		<list name="marks" cascade="all" lazy="false">
+			<key column="student_id"></key>
+			<list-index column="idx"/>
+			<one-to-many class="hibernate.test.school.Mark"/>
+		</list>
+
+		<set name="addresses" cascade="all" lazy="false">
+			<key column="student_id"></key>
+			<one-to-many class="hibernate.test.school.Address"/>
+		</set>
+
+		<set name="sortedAddresses" cascade="all" lazy="false" sort="hibernate.test.school.CustomAddressComparator">
+			<key column="student_id"></key>
+			<one-to-many class="hibernate.test.school.Address"/>
+		</set>
+
+		<map name="pets" cascade="all" lazy="false">
+			<key column="student_id"></key>
+			<map-key column="name" type="string"/>
+			<one-to-many class="hibernate.test.school.Pet"/>
+		</map>
+
+		<map name="sortedPets" cascade="all" lazy="false" sort="natural">
+			<key column="student_id"></key>
+			<map-key column="name" type="string"/>
+			<one-to-many class="hibernate.test.school.Pet"/>
+		</map>
+
+		<!-- Ми беремо вже існуючі дані, і просто агрегуємо їх - для зручнішого представлення -->
+		<component name="fullName" class="hibernate.test.school.FullName">
+			<property name="name" column="NAME" type="string" insert="false" update="false"/>
+			<property name="lastname" column="LASTNAME" type="string" insert="false" update="false"/>
+		</component>
+
+		<!--One-to-One-->
+		<one-to-one name="detailedInfo" class="hibernate.test.school.DetailedInfo" cascade="save-update" lazy="false"></one-to-one>
+
+		<!-- Many-to-Many-->
+		<set name="articles" table="ARTICLE_STUDENT" lazy="false" cascade="all" inverse="false">
+			<key>
+				<column name="student_id"/>
+			</key>
+
+			<many-to-many entity-name="hibernate.test.school.Article">
+				<column name="article_id"/>
+			</many-to-many>
+		</set>
+
+		<!-- Many-to-One-->
+		<many-to-one name = "institute" column = "INSTITUTE" class="hibernate.test.school.Institute" lazy="false"/>
+
+	</class>
+</hibernate-mapping>

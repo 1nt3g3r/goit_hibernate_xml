@@ -37,12 +37,6 @@
 			<version>3.6.3.Final</version>
 		</dependency>
 
-		<dependency>
-			<groupId>javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>3.12.1.GA</version>
-		</dependency>
-
                 <!-- H2 Database. Use as fallback if MySQL not installed-->
                 <dependency>
                     <groupId>com.h2database</groupId>
